@@ -1,23 +1,23 @@
 ﻿namespace smart_date_picker
 {
     /// <summary>
-    /// Report period type
+    /// Report period type. The numbers are used for bumping logic.
     /// </summary>
     public enum PeriodType
     {
         /// <summary>
         /// By week
         /// </summary>
-        Weeks,
+        Weeks = 7,
 
         /// <summary>
         /// By month
         /// </summary>
-        Months,
+        Months = 31,
 
         /// <summary>
         /// By calendar quarter
         /// </summary>
-        Quarters
+        Quarters = 93
     }
 }
