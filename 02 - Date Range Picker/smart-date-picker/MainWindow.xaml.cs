@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Sodium;
 using SWidgets;
+using System;
 
 namespace smart_date_picker
 {
@@ -9,9 +10,12 @@ namespace smart_date_picker
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly DataAvailabilityService dataAvailabilityService;
+
         public MainWindow()
         {
             InitializeComponent();
+            dataAvailabilityService = new DataAvailabilityService();
 
             //Wrap FRP initialisation code in a transaction
             Transaction.RunVoid(() =>
@@ -21,6 +25,9 @@ namespace smart_date_picker
                 SButton months = new SButton { Content = "Months", Width = 75, Margin = new Thickness(5, 0, 0, 0) };
                 SButton quarters = new SButton { Content = "Quarters", Width = 75, Margin = new Thickness(5, 0, 0, 0) };
 
+                SDateField startDateField = new SDateField();
+                SDateField endDateField = new SDateField();
+                
                 //Convert click event streams into PeriodType streams
                 Stream<PeriodType> sWeeks = weeks.SClicked.Map(_ => PeriodType.Weeks);
                 Stream<PeriodType> sMonths = months.SClicked.Map(_ => PeriodType.Months);
@@ -31,16 +38,32 @@ namespace smart_date_picker
 
                 //Hold a value of the stream in a cell, and also specifies Weeks as the default value
                 Cell<PeriodType> cPeriodTypeCell = sPeriodType.Hold(PeriodType.Weeks);
+                
+                Cell<DateRange> cDateRange = startDateField.SelectedDate.Lift(endDateField.SelectedDate, cPeriodTypeCell, 
+                    (start, end, periodType) => 
+                    {
+                        //TODO: Refactor this into a cell
+                        var dataAvailableDates = dataAvailabilityService.GetDataAvailability();
+
+                        //TODO: Validate and adjust according to periodType
+                        return new DateRange(start, end);
+                    });
 
                 //Display the contents of the cell by mapping it to a string that SLabel can display
                 Cell<string> cPeriodTypeString = cPeriodTypeCell.Map(p => p.ToString());
                 SLabel lbl = new SLabel(cPeriodTypeString) { Width = 75, Margin = new Thickness(5, 0, 0, 0) };
+                SLabel selectedDate = new SLabel(cDateRange.Map(dr => dr.ToString()));
 
+                
                 //Add controls to WPF StackPanel container
                 Container.Children.Add(weeks);
                 Container.Children.Add(months);
                 Container.Children.Add(quarters);
-                Container.Children.Add(lbl);
+                ResultsContainer.Children.Add(lbl);
+                ResultsContainer.Children.Add(selectedDate);
+
+                DateRangeContainer.Children.Add(startDateField);
+                DateRangeContainer.Children.Add(endDateField);
             });
         }
     }

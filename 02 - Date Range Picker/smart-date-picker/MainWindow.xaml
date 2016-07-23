@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <StackPanel x:Name="Container" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="Container" Orientation="Horizontal" Grid.Row="0" />
+        <StackPanel x:Name="DateRangeContainer" Grid.Row="1"></StackPanel>
+        <StackPanel x:Name="ResultsContainer" Orientation="Horizontal" Grid.Row="2"/>
     </Grid>
 </Window>
