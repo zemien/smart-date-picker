@@ -1,8 +1,5 @@
 ﻿using Sodium;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,5 +39,7 @@ namespace smart_date_picker
             mDataAvailabilitySink.Send(new DateRange(new DateTime(2014, 1, 1), new DateTime(2016, 12, 31)));
             return mDataAvailabilitySink.Sample();
         }
+
+        //TODO: Simulate new data coming in and send()ing on the cell
     }
 }

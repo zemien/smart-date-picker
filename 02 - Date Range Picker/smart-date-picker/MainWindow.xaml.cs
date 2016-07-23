@@ -1,6 +1,5 @@
 ﻿using Sodium;
 using SWidgets;
-using System;
 using System.Windows;
 
 namespace smart_date_picker
@@ -42,6 +41,8 @@ namespace smart_date_picker
                 //Combine the different cells into one DateRange using a Lift() call to BumpDates()
                 Cell<DateRange> cDateRange = startDateField.SelectedDate.Lift(
                     endDateField.SelectedDate, dataAvailabilityService.DataAvailability, cPeriodTypeCell, ReportDateRangeBumper.BumpDates);
+
+                //TODO: Map the bumped dates back to the control to reflect final selection
 
                 //Display the contents of the cell by mapping it to a string that SLabel can display
                 Cell<string> cPeriodTypeString = cPeriodTypeCell.Map(p => p.ToString());

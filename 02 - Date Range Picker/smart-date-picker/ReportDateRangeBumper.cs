@@ -8,7 +8,7 @@ namespace smart_date_picker
     public static class ReportDateRangeBumper
     {
         private const byte MaxBumpingAttempt = 5;
-        
+
         /// <summary>
         /// Bumps the given start and end dates into a valid data report range
         /// </summary>
@@ -27,7 +27,7 @@ namespace smart_date_picker
 
             //TODO: Determine which date the user selected as I'm currently assuming the start date takes precedence.
             var finalStart = start;
-            var finalEnd = (end < start) ? start.AddDays(1) : end;
+            var finalEnd = (end < start) ? start : end;
 
             finalStart = finalStart.ToStart(periodType);
             finalEnd = finalEnd.ToEnd(periodType);
