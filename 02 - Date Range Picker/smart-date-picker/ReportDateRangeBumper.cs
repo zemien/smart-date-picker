@@ -7,7 +7,6 @@ namespace smart_date_picker
     /// </summary>
     public static class ReportDateRangeBumper
     {
-        private const byte MaxBumpingAttempt = 5;
 
         /// <summary>
         /// Bumps the given start and end dates into a valid data report range
