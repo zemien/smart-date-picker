@@ -42,8 +42,10 @@ namespace SWidgets
                     from m in mm
                     from d in md
                     select new DateTime(y, m, d)).Map(m => m.Match(v => v, () => DateTime.Now));
+            this.SelectedDateChanged = Operational.Value(SelectedDate);
         }
 
         public Cell<DateTime> SelectedDate;
+        public Stream<DateTime> SelectedDateChanged;
     }
 }
