@@ -7,7 +7,7 @@ namespace smart_date_picker
         public DateRange(DateTime startDate, DateTime endDate)
         {
             if (startDate > endDate)
-                throw new ArgumentOutOfRangeException("startDate", "Start date must be less than or equal to end date");
+                throw new ArgumentOutOfRangeException("startDate", $"Start date {startDate} must be less than or equal to end date {endDate}");
 
             StartDate = startDate;
             EndDate = endDate;
