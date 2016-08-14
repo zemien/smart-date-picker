@@ -38,9 +38,15 @@ namespace smart_date_picker
                 //Hold a value of the stream in a cell, and also specifies Weeks as the default value
                 Cell<PeriodType> cPeriodTypeCell = sPeriodType.Hold(PeriodType.Weeks);
 
+                //Priority date
+                Stream<DatePriority> sStartPriority = startDateField.SelectedDateChanged.Map(_ => DatePriority.StartDate);
+                Stream<DatePriority> sEndPriority = endDateField.SelectedDateChanged.Map(_ => DatePriority.EndDate);
+                Stream<DatePriority> sDatePriority = sStartPriority.OrElse(sEndPriority);
+                Cell<DatePriority> cDatePriority = sDatePriority.Hold(DatePriority.StartDate);
+
                 //Combine the different cells into one DateRange using a Lift() call to BumpDates()
                 Cell<DateRange> cDateRange = startDateField.SelectedDate.Lift(
-                    endDateField.SelectedDate, dataAvailabilityService.DataAvailability, cPeriodTypeCell, ReportDateRangeBumper.BumpDates);
+                    endDateField.SelectedDate, dataAvailabilityService.DataAvailability, cPeriodTypeCell, cDatePriority, ReportDateRangeBumper.BumpDates);
 
                 //TODO: Map the bumped dates back to the control to reflect final selection
 

@@ -45,7 +45,7 @@ namespace smart_date_picker_tests
         public void WeekBumping_EndDate_ToAfterDataAvailability_Test()
         {
             var dataAvailability = new DateRange(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-12-31"));
-            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-06-12"), DateTime.Parse("2017-02-15"), dataAvailability, PeriodType.Weeks);
+            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-06-12"), DateTime.Parse("2017-02-15"), dataAvailability, PeriodType.Weeks, DatePriority.EndDate);
 
             var expected = new DateRange(DateTime.Parse("2016-06-12"), DateTime.Parse("2016-12-31"));
 
@@ -78,7 +78,7 @@ namespace smart_date_picker_tests
         public void MonthBumping_EndDate_ToEndNextMonth_Test()
         {
             var dataAvailability = new DateRange(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-12-31"));
-            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-06-01"), DateTime.Parse("2016-07-31"), dataAvailability, PeriodType.Months);
+            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-06-01"), DateTime.Parse("2016-07-31"), dataAvailability, PeriodType.Months, DatePriority.EndDate);
 
             var expected = new DateRange(DateTime.Parse("2016-06-01"), DateTime.Parse("2016-07-31"));
 
@@ -89,7 +89,7 @@ namespace smart_date_picker_tests
         public void MonthBumping_EndDate_ToFewMonthsPrior_Test()
         {
             var dataAvailability = new DateRange(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-12-31"));
-            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-06-01"), DateTime.Parse("2016-02-28"), dataAvailability, PeriodType.Months);
+            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-06-01"), DateTime.Parse("2016-02-28"), dataAvailability, PeriodType.Months, DatePriority.EndDate);
 
             var expected = new DateRange(DateTime.Parse("2016-02-01"), DateTime.Parse("2016-02-29"));
 
@@ -111,7 +111,7 @@ namespace smart_date_picker_tests
         public void MonthBumping_EndDate_ToBeforeDataAvailability_Test()
         {
             var dataAvailability = new DateRange(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-12-31"));
-            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-06-01"), DateTime.Parse("2015-12-20"), dataAvailability, PeriodType.Months);
+            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-06-01"), DateTime.Parse("2015-12-20"), dataAvailability, PeriodType.Months, DatePriority.EndDate);
 
             var expected = new DateRange(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-01-31"));
 
@@ -177,7 +177,7 @@ namespace smart_date_picker_tests
         public void QuarterBumping_EndDate_ToPastWeekButFewerQuarters_Test()
         {
             var dataAvailability = new DateRange(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-12-31"));
-            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-03-15"), dataAvailability, PeriodType.Quarters);
+            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-03-15"), dataAvailability, PeriodType.Quarters, DatePriority.EndDate);
 
             var expected = new DateRange(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-03-31"));
 
@@ -199,7 +199,7 @@ namespace smart_date_picker_tests
         public void QuarterBumping_EndDate_ToBeforeDataAvailability_Test()
         {
             var dataAvailability = new DateRange(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-12-31"));
-            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-01-01"), DateTime.Parse("2015-05-15"), dataAvailability, PeriodType.Quarters);
+            var actual = ReportDateRangeBumper.BumpDates(DateTime.Parse("2016-01-01"), DateTime.Parse("2015-05-15"), dataAvailability, PeriodType.Quarters, DatePriority.EndDate);
 
             var expected = new DateRange(DateTime.Parse("2016-01-01"), DateTime.Parse("2016-03-31"));
 

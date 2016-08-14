@@ -14,8 +14,9 @@ namespace smart_date_picker
         /// <param name="end">Selected end date</param>
         /// <param name="dataAvailability">Dates the system has data for</param>
         /// <param name="periodType">Period Type</param>
+        /// <param name="datePriority">Which date to prioritise maintaining</param>
         /// <returns></returns>
-        public static DateRange BumpDates(DateTime start, DateTime end, DateRange dataAvailability, PeriodType periodType)
+        public static DateRange BumpDates(DateTime start, DateTime end, DateRange dataAvailability, PeriodType periodType, DatePriority datePriority = DatePriority.StartDate)
         {
             var constrainedDataAvailability = GetConstrainedDataAvailability(dataAvailability, periodType);
 
@@ -23,9 +24,9 @@ namespace smart_date_picker
             if (constrainedDataAvailability == null)
                 return dataAvailability;
 
-            //TODO: Determine which date the user selected as I'm currently assuming the start date takes precedence.
-            var finalStart = start;
-            var finalEnd = (end < start) ? start : end;
+            //Determines the starting point pre-bumping, based on which date has priority (i.e. which one the user picked to change)
+            var finalStart = (datePriority == DatePriority.StartDate) ? start : (start > end) ? end : start;
+            var finalEnd = (datePriority == DatePriority.EndDate) ? end : (end < start) ? start : end;
 
             finalStart = finalStart.ToStart(periodType);
             finalEnd = finalEnd.ToEnd(periodType);
@@ -39,7 +40,7 @@ namespace smart_date_picker
             if (finalEnd < constrainedDataAvailability.Value.StartDate)
             {
                 finalStart = constrainedDataAvailability.Value.StartDate;
-                finalStart = constrainedDataAvailability.Value.StartDate.ToEnd(periodType);
+                finalEnd = constrainedDataAvailability.Value.StartDate.ToEnd(periodType);
             }
 
             if (finalStart < constrainedDataAvailability.Value.StartDate)
@@ -98,14 +99,14 @@ namespace smart_date_picker
                     return new DateTime(date.Year, date.Month, 1);
 
                 case PeriodType.Quarters:
-                    for (int month = 4; month <= 10; month += 3)
+                    for (int month = 4; month <= 13; month += 3)
                     {
                         if (date.Month < month)
                         {
                             return new DateTime(date.Year, month - 3, 1);
                         }
                     }
-                    return new DateTime(date.Year, 9, 1);
+                    return DateTime.MinValue;
 
                 default:
                     return date;
@@ -130,14 +131,15 @@ namespace smart_date_picker
                     return new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
 
                 case PeriodType.Quarters:
-                    for (int month = 4; month <= 10; month += 3)
+                    for (int month = 10; month >= 1; month -= 3)
                     {
-                        if (date.Month < month)
+                        if (date.Month >= month)
                         {
-                            return new DateTime(date.Year, month, 1).AddDays(-1);
+                            var newMonth = month + 2;
+                            return new DateTime(date.Year, newMonth, DateTime.DaysInMonth(date.Year, newMonth));
                         }
                     }
-                    return new DateTime(date.Year, 12, 31);
+                    return DateTime.MaxValue;
 
                 default:
                     return date;
