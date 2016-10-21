@@ -14,7 +14,7 @@ namespace smart_date_picker
         /// </summary>
         public DataAvailabilityService()
         {
-            mDataAvailabilitySink = new CellSink<DateRange>(new DateRange(new DateTime(2014, 1, 1), new DateTime(2016, 07, 31)));
+            mDataAvailabilitySink = new CellSink<DateRange>(new DateRange(new DateTime(2014, 1, 1), new DateTime(2016, 12, 31)));
         }
 
         /// <summary>
